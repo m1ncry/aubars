@@ -5,6 +5,7 @@
 // @description  Says hi from tampermonkey menu.
 // @author       managanemeke@gmail.com
 // @match        *://*/*
+// @noframes
 // @grant        GM_registerMenuCommand
 // ==/UserScript==
 
