@@ -19,6 +19,8 @@
   function hi() {
     setCard(cards[0]);
     findClick();
+    setTimeout(cardNumber, 200);
+    setTimeout(medOrg, 3000);
   }
 
   function setCard(card) {
@@ -31,6 +33,18 @@
     const find = document.querySelector('table[name="ButSearchPatient"]');
     console.log(find);
     find.click();
+  }
+
+  function cardNumber() {
+    const num = document.querySelector('td[name="CARD_NUMBER_COL"] a');
+    console.log(num);
+    num.click();
+  }
+
+  function medOrg() {
+    const med = document.querySelector('div[name="PMC_AnketaPageControl2"] .TabCenter');
+    console.log(med);
+    med.click();
   }
 
   GM_registerMenuCommand("hi", hi);
