@@ -12,6 +12,8 @@
 (function() {
   'use strict';
 
+  const territory = 1;
+
   const cards = [
     '18/017025',
   ];
@@ -19,8 +21,10 @@
   function hi() {
     setCard(cards[0]);
     findClick();
-    setTimeout(cardNumber, 200);
-    setTimeout(medOrg, 3000);
+    setTimeout(cardNumber, 500);
+    setTimeout(medOrg, 5000);
+    setTimeout(editClick, 3000);
+    setRegType(territory);
   }
 
   function setCard(card) {
@@ -45,6 +49,18 @@
     const med = document.querySelector('div[name="PMC_AnketaPageControl2"] .TabCenter');
     console.log(med);
     med.click();
+  }
+
+  function editClick() {
+    const edit = document.querySelector('#PopUp_Menu_P_AGENT_REGISTRATION_GRID tr.item-base img.edit');
+    console.log(edit);
+    edit.click();
+  }
+
+  function setRegType(type) {
+    const input = document.querySelector('table[name="REG_TYPE"] input.input-ctrl');
+    console.log(input);
+    input.value = type;
   }
 
   GM_registerMenuCommand("hi", hi);
