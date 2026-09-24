@@ -15,7 +15,7 @@
   const territory = 1;
 
   const cards = [
-    '18/017025',
+    '18/033663',
   ];
 
   function hi() {
@@ -25,6 +25,7 @@
     setTimeout(medOrg, 5000);
     setTimeout(editClick, 3000);
     setRegType(territory);
+    setTimeout(okRegType, 3000);
   }
 
   function setCard(card) {
@@ -61,6 +62,12 @@
     const input = document.querySelector('table[name="REG_TYPE"] input.input-ctrl');
     console.log(input);
     input.value = type;
+  }
+
+  function okRegType() {
+    const okreg = document.querySelector('table[onclick*="closeWindow"]');
+    console.log(okreg);
+    okreg.click();
   }
 
   GM_registerMenuCommand("hi", hi);
