@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         hi
 // @namespace    http://tampermonkey.net/
-// @version      1.0.0
+// @version      1.1.0
 // @description  Says hi from tampermonkey menu.
 // @author       managanemeke@gmail.com
 // @match        *://*/*
@@ -9,24 +9,67 @@
 // @grant        GM_registerMenuCommand
 // ==/UserScript==
 
-(function() {
+(function () {
   'use strict';
 
   const territory = 1;
 
   const cards = [
     '18/033663',
+    '18/000001',
+    '18/000002'
   ];
 
-  function hi() {
-    setCard(cards[0]);
+  const DELAYS = {
+    afterCardNumber: 500,
+    afterMedOrg:     3000,
+    afterEditClick:  3000,
+    afterRegType:    3000,
+    afterOkRegType:  3000,
+    afterOkEdit:     3000,
+  };
+
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  async function processCard(card) {
+    console.log('=== Обработка карты:', card, '===');
+
+    setCard(card);
     findClick();
-    setTimeout(cardNumber, 500);
-    setTimeout(medOrg, 5000);
-    setTimeout(editClick, 3000);
+
+    await sleep(DELAYS.afterCardNumber);
+    cardNumber();
+
+    await sleep(DELAYS.afterMedOrg);
+    medOrg();
+
+    await sleep(DELAYS.afterEditClick);
+    editClick();
+
+    await sleep(DELAYS.afterRegType);
     setRegType(territory);
-    setTimeout(okRegType, 3000);
+
+    await sleep(DELAYS.afterOkRegType);
+    okRegType();
+
+    await sleep(DELAYS.afterOkEdit);
+    okEditClick();
+
+    await sleep(2000);
   }
+
+  async function hi() {
+    for (let i = 0; i < cards.length; i++) {
+      try {
+        await processCard(cards[i]);
+        console.log(`Карта ${cards[i]} обработана (${i + 1}/${cards.length})`);
+      } catch (e) {
+        console.error(`Ошибка на карте ${cards[i]}:`, e);
+      }
+    }
+    console.log('Все карты обработаны.');
+  }
+
 
   function setCard(card) {
     const input = document.querySelector('input[placeholder="Номер карты"]');
@@ -59,17 +102,54 @@
   }
 
   function setRegType(type) {
-    const input = document.querySelector('table[name="REG_TYPE"] input.input-ctrl');
-    console.log(input);
-    input.value = type;
+    const combo = document.querySelector('table[name="REG_TYPE"]');
+    const input = combo.querySelector('input.input-ctrl');
+    const item = combo.querySelector(
+      `tr[cmptype="ComboItem"][comboboxname="REG_TYPE"][value="${type}"]:not([sample="true"])`
+    );
+
+    if (!item) {
+      console.warn('Не найдено value=' + type);
+      return;
+    }
+
+    combo.setAttribute('keyvalue', type);
+
+    combo.querySelectorAll('tr[cmptype="ComboItem"]').forEach(tr => {
+      tr.classList.remove('combo-item-selected');
+      tr.removeAttribute('selected');
+    });
+    item.classList.add('combo-item-selected');
+    item.setAttribute('selected', 'true');
+
+    const caption = item.querySelector('span[cont="itemcaption"]');
+    input.value = caption ? caption.textContent.trim() : '';
+
+    try {
+      if (typeof ComboBox_AfterRefresh === 'function') {
+      }
+    } catch (e) { /* ignore */ }
+
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+    combo.dispatchEvent(new Event('change', { bubbles: true }));
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    input.dispatchEvent(new Event('blur', { bubbles: true }));
+
+    console.log('Готово. keyvalue=' + combo.getAttribute('keyvalue') +
+      ', value=' + input.value);
   }
 
   function okRegType() {
-    const okreg = document.querySelector('table[onclick*="closeWindow"]');
-    console.log(okreg);
-    okreg.click();
+    const ok = document.querySelector('table[name="BUTTON_OK"]');
+    console.log(ok);
+    ok.click();
+  }
+
+  function okEditClick() {
+    const ok = document.querySelector('table[cmptype="Button"][onclick*="closeWindow"]');
+    console.log(ok);
+    ok.click();
   }
 
   GM_registerMenuCommand("hi", hi);
 })();
-
