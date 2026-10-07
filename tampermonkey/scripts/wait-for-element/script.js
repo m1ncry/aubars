@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         hi
+// @name         wait-for-element
 // @namespace    http://tampermonkey.net/
 // @version      1.0.0
-// @description  Says hi from tampermonkey menu.
+// @description  Waits for button element example.
 // @author       managanemeke@gmail.com
 // @match        *://*/*
 // @noframes
