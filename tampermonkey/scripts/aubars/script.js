@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         hi
+// @name         set-registration-type-for-many-cards
 // @namespace    http://tampermonkey.net/
-// @version      1.1.0
-// @description  Says hi from tampermonkey menu.
+// @version      1.0.0
+// @description  Sets registration type for many cards.
 // @author       managanemeke@gmail.com
 // @match        *://*/*
 // @noframes
@@ -151,5 +151,5 @@
     ok.click();
   }
 
-  GM_registerMenuCommand("hi", hi);
+  GM_registerMenuCommand("Установить тип привязки для множества карт", hi);
 })();
