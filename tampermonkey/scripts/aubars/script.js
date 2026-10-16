@@ -70,6 +70,7 @@
     console.log('Все карты обработаны.');
   }
 
+  GM_registerMenuCommand("Установить тип привязки для множества карт", main);
 
   function setCard(card) {
     const input = document.querySelector('input[placeholder="Номер карты"]');
@@ -150,6 +151,4 @@
     console.log(ok);
     ok.click();
   }
-
-  GM_registerMenuCommand("Установить тип привязки для множества карт", main);
 })();
