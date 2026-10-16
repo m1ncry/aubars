@@ -58,7 +58,7 @@
     await sleep(2000);
   }
 
-  async function hi() {
+  async function main() {
     for (let i = 0; i < cards.length; i++) {
       try {
         await processCard(cards[i]);
@@ -151,5 +151,5 @@
     ok.click();
   }
 
-  GM_registerMenuCommand("Установить тип привязки для множества карт", hi);
+  GM_registerMenuCommand("Установить тип привязки для множества карт", main);
 })();
