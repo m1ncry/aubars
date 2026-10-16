@@ -31,6 +31,20 @@
 
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+  async function main() {
+    for (let i = 0; i < cards.length; i++) {
+      try {
+        await processCard(cards[i]);
+        console.log(`Карта ${cards[i]} обработана (${i + 1}/${cards.length})`);
+      } catch (e) {
+        console.error(`Ошибка на карте ${cards[i]}:`, e);
+      }
+    }
+    console.log('Все карты обработаны.');
+  }
+
+  GM_registerMenuCommand("Установить тип привязки для множества карт", main);
+
   async function processCard(card) {
     console.log('=== Обработка карты:', card, '===');
 
@@ -57,20 +71,6 @@
 
     await sleep(2000);
   }
-
-  async function main() {
-    for (let i = 0; i < cards.length; i++) {
-      try {
-        await processCard(cards[i]);
-        console.log(`Карта ${cards[i]} обработана (${i + 1}/${cards.length})`);
-      } catch (e) {
-        console.error(`Ошибка на карте ${cards[i]}:`, e);
-      }
-    }
-    console.log('Все карты обработаны.');
-  }
-
-  GM_registerMenuCommand("Установить тип привязки для множества карт", main);
 
   function setCard(card) {
     const input = document.querySelector('input[placeholder="Номер карты"]');
