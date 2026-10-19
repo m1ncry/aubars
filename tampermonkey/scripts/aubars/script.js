@@ -44,25 +44,25 @@
     console.log('=== Обработка карты:', card, '===');
 
     setCard(card);
-    findClick();
+    clickOnFindButton();
 
     await sleep(DELAYS.afterCardNumber);
-    cardNumber();
+    clickOnEditCardLink();
 
     await sleep(DELAYS.afterMedOrg);
-    medOrg();
+    clickOnMedicalOrganizationTab();
 
     await sleep(DELAYS.afterEditClick);
-    editClick();
+    clickOnEditRegistrationButton();
 
     await sleep(DELAYS.afterRegType);
-    setRegType(territory);
+    setRegistrationType(territory);
 
     await sleep(DELAYS.afterOkRegType);
-    okRegType();
+    clickOnSaveRegistrationButton();
 
     await sleep(DELAYS.afterOkEdit);
-    okEditClick();
+    clickOnSaveCardButton();
 
     await sleep(2000);
   }
@@ -71,27 +71,27 @@
     console.log(input);
     input.value = card;
   }
-  function findClick() {
+  function clickOnFindButton() {
     const find = document.querySelector('table[name="ButSearchPatient"]');
     console.log(find);
     find.click();
   }
-  function cardNumber() {
+  function clickOnEditCardLink() {
     const num = document.querySelector('td[name="CARD_NUMBER_COL"] a');
     console.log(num);
     num.click();
   }
-  function medOrg() {
+  function clickOnMedicalOrganizationTab() {
     const med = document.querySelector('div[name="PMC_AnketaPageControl2"] .TabCenter');
     console.log(med);
     med.click();
   }
-  function editClick() {
+  function clickOnEditRegistrationButton() {
     const edit = document.querySelector('#PopUp_Menu_P_AGENT_REGISTRATION_GRID tr.item-base img.edit');
     console.log(edit);
     edit.click();
   }
-  function setRegType(type) {
+  function setRegistrationType(type) {
     const combo = document.querySelector('table[name="REG_TYPE"]');
     const input = combo.querySelector('input.input-ctrl');
     const item = combo.querySelector(
@@ -128,12 +128,12 @@
     console.log('Готово. keyvalue=' + combo.getAttribute('keyvalue') +
       ', value=' + input.value);
   }
-  function okRegType() {
+  function clickOnSaveRegistrationButton() {
     const ok = document.querySelector('table[name="BUTTON_OK"]');
     console.log(ok);
     ok.click();
   }
-  function okEditClick() {
+  function clickOnSaveCardButton() {
     const ok = document.querySelector('table[cmptype="Button"][onclick*="closeWindow"]');
     console.log(ok);
     ok.click();
