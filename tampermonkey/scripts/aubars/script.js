@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         hi
+// @name         set-registration-type-for-many-cards
 // @namespace    http://tampermonkey.net/
-// @version      1.1.0
-// @description  Says hi from tampermonkey menu.
+// @version      1.0.0
+// @description  Sets registration type for many cards.
 // @author       managanemeke@gmail.com
 // @match        *://*/*
 // @noframes
@@ -10,16 +10,14 @@
 // ==/UserScript==
 
 (function () {
+  // main
   'use strict';
-
   const territory = 1;
-
   const cards = [
     '18/033663',
     '18/000001',
     '18/000002'
   ];
-
   const DELAYS = {
     afterCardNumber: 500,
     afterMedOrg:     3000,
@@ -28,8 +26,18 @@
     afterOkRegType:  3000,
     afterOkEdit:     3000,
   };
-
-  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  async function main() {
+    for (let i = 0; i < cards.length; i++) {
+      try {
+        await processCard(cards[i]);
+        console.log(`Карта ${cards[i]} обработана (${i + 1}/${cards.length})`);
+      } catch (e) {
+        console.error(`Ошибка на карте ${cards[i]}:`, e);
+      }
+    }
+    console.log('Все карты обработаны.');
+  }
+  GM_registerMenuCommand("Установить тип привязки для множества карт", main);
 
   async function processCard(card) {
     console.log('=== Обработка карты:', card, '===');
@@ -57,19 +65,6 @@
 
     await sleep(2000);
   }
-
-  async function hi() {
-    for (let i = 0; i < cards.length; i++) {
-      try {
-        await processCard(cards[i]);
-        console.log(`Карта ${cards[i]} обработана (${i + 1}/${cards.length})`);
-      } catch (e) {
-        console.error(`Ошибка на карте ${cards[i]}:`, e);
-      }
-    }
-    console.log('Все карты обработаны.');
-  }
-
 
   function setCard(card) {
     const input = document.querySelector('input[placeholder="Номер карты"]');
@@ -151,5 +146,5 @@
     ok.click();
   }
 
-  GM_registerMenuCommand("hi", hi);
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 })();
