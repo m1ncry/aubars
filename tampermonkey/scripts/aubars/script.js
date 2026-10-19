@@ -10,16 +10,14 @@
 // ==/UserScript==
 
 (function () {
+  // main
   'use strict';
-
   const territory = 1;
-
   const cards = [
     '18/033663',
     '18/000001',
     '18/000002'
   ];
-
   const DELAYS = {
     afterCardNumber: 500,
     afterMedOrg:     3000,
@@ -28,9 +26,6 @@
     afterOkRegType:  3000,
     afterOkEdit:     3000,
   };
-
-  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
   async function main() {
     for (let i = 0; i < cards.length; i++) {
       try {
@@ -42,7 +37,6 @@
     }
     console.log('Все карты обработаны.');
   }
-
   GM_registerMenuCommand("Установить тип привязки для множества карт", main);
 
   async function processCard(card) {
@@ -151,4 +145,6 @@
     console.log(ok);
     ok.click();
   }
+
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 })();
