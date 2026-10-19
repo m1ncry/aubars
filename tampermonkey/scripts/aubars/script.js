@@ -56,7 +56,7 @@
     clickOnEditRegistrationButton();
 
     await sleep(DELAYS.afterRegType);
-    setRegistrationType(territory);
+    selectRegistrationType(territory);
 
     await sleep(DELAYS.afterOkRegType);
     clickOnSaveRegistrationButton();
@@ -91,7 +91,7 @@
     console.log(edit);
     edit.click();
   }
-  function setRegistrationType(type) {
+  function selectRegistrationType(type) {
     const combo = document.querySelector('table[name="REG_TYPE"]');
     const input = combo.querySelector('input.input-ctrl');
     const item = combo.querySelector(
