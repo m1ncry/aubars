@@ -18,14 +18,7 @@
     '18/000001',
     '18/000002'
   ];
-  const DELAYS = {
-    afterCardNumber: 500,
-    afterMedOrg:     3000,
-    afterEditClick:  3000,
-    afterRegType:    3000,
-    afterOkRegType:  3000,
-    afterOkEdit:     3000,
-  };
+  const MAXIMUM_DELAY = 3000;
   async function main() {
     for (let i = 0; i < CARDS.length; i++) {
       try {
@@ -46,25 +39,25 @@
     setCard(card);
     clickOnFindButton();
 
-    await sleep(DELAYS.afterCardNumber);
+    await sleep(MAXIMUM_DELAY);
     clickOnEditCardLink();
 
-    await sleep(DELAYS.afterMedOrg);
+    await sleep(MAXIMUM_DELAY);
     clickOnMedicalOrganizationTab();
 
-    await sleep(DELAYS.afterEditClick);
+    await sleep(MAXIMUM_DELAY);
     clickOnEditRegistrationButton();
 
-    await sleep(DELAYS.afterRegType);
+    await sleep(MAXIMUM_DELAY);
     selectRegistrationType(REGISTRATION_TYPE_TERRITORY);
 
-    await sleep(DELAYS.afterOkRegType);
+    await sleep(MAXIMUM_DELAY);
     clickOnSaveRegistrationButton();
 
-    await sleep(DELAYS.afterOkEdit);
+    await sleep(MAXIMUM_DELAY);
     clickOnSaveCardButton();
 
-    await sleep(2000);
+    await sleep(MAXIMUM_DELAY);
   }
   function setCard(card) {
     const input = document.querySelector('input[placeholder="Номер карты"]');
