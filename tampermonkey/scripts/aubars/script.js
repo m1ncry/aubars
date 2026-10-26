@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         hi
+// @name         set-registration-type-for-many-cards
 // @namespace    http://tampermonkey.net/
-// @version      1.1.0
-// @description  Says hi from tampermonkey menu.
+// @version      1.0.0
+// @description  Sets registration type for many cards.
 // @author       managanemeke@gmail.com
 // @match        *://*/*
 // @noframes
@@ -10,98 +10,81 @@
 // ==/UserScript==
 
 (function () {
+  // main
   'use strict';
-
-  const territory = 1;
-
-  const cards = [
+  const REGISTRATION_TYPE_TERRITORY = 1;
+  const CARDS = [
     '18/033663',
     '18/000001',
     '18/000002'
   ];
-
-  const DELAYS = {
-    afterCardNumber: 500,
-    afterMedOrg:     3000,
-    afterEditClick:  3000,
-    afterRegType:    3000,
-    afterOkRegType:  3000,
-    afterOkEdit:     3000,
-  };
-
-  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-  async function processCard(card) {
-    console.log('=== Обработка карты:', card, '===');
-
-    setCard(card);
-    findClick();
-
-    await sleep(DELAYS.afterCardNumber);
-    cardNumber();
-
-    await sleep(DELAYS.afterMedOrg);
-    medOrg();
-
-    await sleep(DELAYS.afterEditClick);
-    editClick();
-
-    await sleep(DELAYS.afterRegType);
-    setRegType(territory);
-
-    await sleep(DELAYS.afterOkRegType);
-    okRegType();
-
-    await sleep(DELAYS.afterOkEdit);
-    okEditClick();
-
-    await sleep(2000);
-  }
-
-  async function hi() {
-    for (let i = 0; i < cards.length; i++) {
+  const MAXIMUM_DELAY = 3000;
+  async function main() {
+    for (let i = 0; i < CARDS.length; i++) {
       try {
-        await processCard(cards[i]);
-        console.log(`Карта ${cards[i]} обработана (${i + 1}/${cards.length})`);
+        await processCard(CARDS[i]);
+        console.log(`Карта ${CARDS[i]} обработана (${i + 1}/${CARDS.length})`);
       } catch (e) {
-        console.error(`Ошибка на карте ${cards[i]}:`, e);
+        console.error(`Ошибка на карте ${CARDS[i]}:`, e);
       }
     }
     console.log('Все карты обработаны.');
   }
+  GM_registerMenuCommand("Установить тип привязки для множества карт", main);
 
+  // processCard
+  async function processCard(card) {
+    console.log('=== Обработка карты:', card, '===');
 
+    setCard(card);
+    clickOnFindButton();
+
+    await sleep(MAXIMUM_DELAY);
+    clickOnEditCardLink();
+
+    await sleep(MAXIMUM_DELAY);
+    clickOnMedicalOrganizationTab();
+
+    await sleep(MAXIMUM_DELAY);
+    clickOnEditRegistrationButton();
+
+    await sleep(MAXIMUM_DELAY);
+    selectRegistrationType(REGISTRATION_TYPE_TERRITORY);
+
+    await sleep(MAXIMUM_DELAY);
+    clickOnSaveRegistrationButton();
+
+    await sleep(MAXIMUM_DELAY);
+    clickOnSaveCardButton();
+
+    await sleep(MAXIMUM_DELAY);
+  }
   function setCard(card) {
     const input = document.querySelector('input[placeholder="Номер карты"]');
     console.log(input);
     input.value = card;
   }
-
-  function findClick() {
+  function clickOnFindButton() {
     const find = document.querySelector('table[name="ButSearchPatient"]');
     console.log(find);
     find.click();
   }
-
-  function cardNumber() {
+  function clickOnEditCardLink() {
     const num = document.querySelector('td[name="CARD_NUMBER_COL"] a');
     console.log(num);
     num.click();
   }
-
-  function medOrg() {
+  function clickOnMedicalOrganizationTab() {
     const med = document.querySelector('div[name="PMC_AnketaPageControl2"] .TabCenter');
     console.log(med);
     med.click();
   }
-
-  function editClick() {
+  function clickOnEditRegistrationButton() {
     const edit = document.querySelector('#PopUp_Menu_P_AGENT_REGISTRATION_GRID tr.item-base img.edit');
     console.log(edit);
     edit.click();
   }
-
-  function setRegType(type) {
+  function selectRegistrationType(type) {
     const combo = document.querySelector('table[name="REG_TYPE"]');
     const input = combo.querySelector('input.input-ctrl');
     const item = combo.querySelector(
@@ -138,18 +121,17 @@
     console.log('Готово. keyvalue=' + combo.getAttribute('keyvalue') +
       ', value=' + input.value);
   }
-
-  function okRegType() {
+  function clickOnSaveRegistrationButton() {
     const ok = document.querySelector('table[name="BUTTON_OK"]');
     console.log(ok);
     ok.click();
   }
-
-  function okEditClick() {
+  function clickOnSaveCardButton() {
     const ok = document.querySelector('table[cmptype="Button"][onclick*="closeWindow"]');
     console.log(ok);
     ok.click();
   }
 
-  GM_registerMenuCommand("hi", hi);
+  // static
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 })();
