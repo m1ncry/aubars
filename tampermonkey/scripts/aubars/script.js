@@ -12,8 +12,8 @@
 (function () {
   // main
   'use strict';
-  const territory = 1;
-  const cards = [
+  const TERRITORY = 1;
+  const CARDS = [
     '18/033663',
     '18/000001',
     '18/000002'
@@ -27,12 +27,12 @@
     afterOkEdit:     3000,
   };
   async function main() {
-    for (let i = 0; i < cards.length; i++) {
+    for (let i = 0; i < CARDS.length; i++) {
       try {
-        await processCard(cards[i]);
-        console.log(`Карта ${cards[i]} обработана (${i + 1}/${cards.length})`);
+        await processCard(CARDS[i]);
+        console.log(`Карта ${CARDS[i]} обработана (${i + 1}/${CARDS.length})`);
       } catch (e) {
-        console.error(`Ошибка на карте ${cards[i]}:`, e);
+        console.error(`Ошибка на карте ${CARDS[i]}:`, e);
       }
     }
     console.log('Все карты обработаны.');
@@ -56,7 +56,7 @@
     clickOnEditRegistrationButton();
 
     await sleep(DELAYS.afterRegType);
-    selectRegistrationType(territory);
+    selectRegistrationType(TERRITORY);
 
     await sleep(DELAYS.afterOkRegType);
     clickOnSaveRegistrationButton();
