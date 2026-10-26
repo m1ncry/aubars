@@ -12,7 +12,7 @@
 (function () {
   // main
   'use strict';
-  const TERRITORY = 1;
+  const REGISTRATION_TYPE_TERRITORY = 1;
   const CARDS = [
     '18/033663',
     '18/000001',
@@ -56,7 +56,7 @@
     clickOnEditRegistrationButton();
 
     await sleep(DELAYS.afterRegType);
-    selectRegistrationType(TERRITORY);
+    selectRegistrationType(REGISTRATION_TYPE_TERRITORY);
 
     await sleep(DELAYS.afterOkRegType);
     clickOnSaveRegistrationButton();
