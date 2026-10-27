@@ -68,8 +68,8 @@
     find.click();
   }
   async function clickOnEditCardLink() {
-    const editCardLink = await waitForElement('td[name="CARD_NUMBER_COL"] a');
-    editCardLink.click();
+    const link = await waitForElement('td[name="CARD_NUMBER_COL"] a');
+    link.click();
   }
   function clickOnMedicalOrganizationTab() {
     const med = document.querySelector('div[name="PMC_AnketaPageControl2"] .TabCenter');
