@@ -36,7 +36,7 @@
   async function processCard(card) {
     console.log('=== Обработка карты:', card, '===');
 
-    setCard(card);
+    await setCard(card);
     clickOnFindButton();
 
     await clickOnEditCardLink();
