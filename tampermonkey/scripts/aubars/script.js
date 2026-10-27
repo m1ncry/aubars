@@ -58,9 +58,8 @@
 
     await sleep(MAXIMUM_DELAY);
   }
-  function setCard(card) {
-    const input = document.querySelector('input[placeholder="Номер карты"]');
-    console.log(input);
+  async function setCard(card) {
+    const input = await waitForElement('input[placeholder="Номер карты"]');
     input.value = card;
   }
   function clickOnFindButton() {
