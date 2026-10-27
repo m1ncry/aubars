@@ -37,8 +37,7 @@
     console.log('=== Обработка карты:', card, '===');
 
     await setCard(card);
-    clickOnFindButton();
-
+    await clickOnFindButton();
     await clickOnEditCardLink();
 
     await sleep(MAXIMUM_DELAY);
@@ -62,10 +61,9 @@
     const input = await waitForElement('input[placeholder="Номер карты"]');
     input.value = card;
   }
-  function clickOnFindButton() {
-    const find = document.querySelector('table[name="ButSearchPatient"]');
-    console.log(find);
-    find.click();
+  async function clickOnFindButton() {
+    const button = await waitForElement('table[name="ButSearchPatient"]');
+    button.click();
   }
   async function clickOnEditCardLink() {
     const link = await waitForElement('td[name="CARD_NUMBER_COL"] a');
