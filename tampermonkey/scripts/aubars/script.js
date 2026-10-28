@@ -22,6 +22,7 @@
   async function main() {
     for (let i = 0; i < CARDS.length; i++) {
       try {
+        console.log('=== Обработка карты:', CARDS[i], '===');
         await processCard(CARDS[i]);
         console.log(`Карта ${CARDS[i]} обработана (${i + 1}/${CARDS.length})`);
       } catch (e) {
@@ -34,8 +35,6 @@
 
   // processCard
   async function processCard(card) {
-    console.log('=== Обработка карты:', card, '===');
-
     await setCard(card);
     await clickOnFindButton();
     await clickOnEditCardLink();
