@@ -18,7 +18,6 @@
     '18/000001',
     '18/000002'
   ];
-  const MAXIMUM_DELAY = 3000;
   async function main() {
     for (let i = 0; i < CARDS.length; i++) {
       try {
