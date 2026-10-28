@@ -40,9 +40,7 @@
     await clickOnFindButton();
     await clickOnEditCardLink();
     await clickOnMedicalOrganizationTab();
-
-    await sleep(MAXIMUM_DELAY);
-    clickOnEditRegistrationButton();
+    await clickOnEditRegistrationButton();
 
     await sleep(MAXIMUM_DELAY);
     selectRegistrationType(REGISTRATION_TYPE_TERRITORY);
@@ -71,10 +69,9 @@
     const tab = await waitForElement('div[name="PMC_AnketaPageControl2"] .TabCenter');
     tab.click();
   }
-  function clickOnEditRegistrationButton() {
-    const edit = document.querySelector('#PopUp_Menu_P_AGENT_REGISTRATION_GRID tr.item-base img.edit');
-    console.log(edit);
-    edit.click();
+  async function clickOnEditRegistrationButton() {
+    const button = await waitForElement('#PopUp_Menu_P_AGENT_REGISTRATION_GRID tr.item-base img.edit');
+    button.click();
   }
   function selectRegistrationType(type) {
     const combo = document.querySelector('table[name="REG_TYPE"]');
