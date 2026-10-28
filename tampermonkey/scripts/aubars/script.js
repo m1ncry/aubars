@@ -41,9 +41,7 @@
     await clickOnEditCardLink();
     await clickOnMedicalOrganizationTab();
     await clickOnEditRegistrationButton();
-
-    await sleep(MAXIMUM_DELAY);
-    selectRegistrationType(REGISTRATION_TYPE_TERRITORY);
+    await selectRegistrationType(REGISTRATION_TYPE_TERRITORY);
 
     await sleep(MAXIMUM_DELAY);
     clickOnSaveRegistrationButton();
@@ -73,10 +71,10 @@
     const button = await waitForElement('#PopUp_Menu_P_AGENT_REGISTRATION_GRID tr.item-base img.edit');
     button.click();
   }
-  function selectRegistrationType(type) {
-    const combo = document.querySelector('table[name="REG_TYPE"]');
-    const input = combo.querySelector('input.input-ctrl');
-    const item = combo.querySelector(
+  async function selectRegistrationType(type) {
+    const select = await waitForElement('table[name="REG_TYPE"]');
+    const input = select.querySelector('input.input-ctrl');
+    const item = select.querySelector(
       `tr[cmptype="ComboItem"][comboboxname="REG_TYPE"][value="${type}"]:not([sample="true"])`
     );
 
@@ -85,9 +83,9 @@
       return;
     }
 
-    combo.setAttribute('keyvalue', type);
+    select.setAttribute('keyvalue', type);
 
-    combo.querySelectorAll('tr[cmptype="ComboItem"]').forEach(tr => {
+    select.querySelectorAll('tr[cmptype="ComboItem"]').forEach(tr => {
       tr.classList.remove('combo-item-selected');
       tr.removeAttribute('selected');
     });
@@ -103,11 +101,11 @@
     } catch (e) { /* ignore */ }
 
     input.dispatchEvent(new Event('change', { bubbles: true }));
-    combo.dispatchEvent(new Event('change', { bubbles: true }));
+    select.dispatchEvent(new Event('change', { bubbles: true }));
     input.dispatchEvent(new Event('input', { bubbles: true }));
     input.dispatchEvent(new Event('blur', { bubbles: true }));
 
-    console.log('Готово. keyvalue=' + combo.getAttribute('keyvalue') +
+    console.log('Готово. keyvalue=' + select.getAttribute('keyvalue') +
       ', value=' + input.value);
   }
   function clickOnSaveRegistrationButton() {
