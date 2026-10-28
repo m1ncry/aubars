@@ -39,9 +39,7 @@
     await setCard(card);
     await clickOnFindButton();
     await clickOnEditCardLink();
-
-    await sleep(MAXIMUM_DELAY);
-    clickOnMedicalOrganizationTab();
+    await clickOnMedicalOrganizationTab();
 
     await sleep(MAXIMUM_DELAY);
     clickOnEditRegistrationButton();
@@ -69,10 +67,9 @@
     const link = await waitForElement('td[name="CARD_NUMBER_COL"] a');
     link.click();
   }
-  function clickOnMedicalOrganizationTab() {
-    const med = document.querySelector('div[name="PMC_AnketaPageControl2"] .TabCenter');
-    console.log(med);
-    med.click();
+  async function clickOnMedicalOrganizationTab() {
+    const tab = await waitForElement('div[name="PMC_AnketaPageControl2"] .TabCenter');
+    tab.click();
   }
   function clickOnEditRegistrationButton() {
     const edit = document.querySelector('#PopUp_Menu_P_AGENT_REGISTRATION_GRID tr.item-base img.edit');
