@@ -112,8 +112,6 @@
   }
 
   // static
-  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
   /**
    * Waits for an element matching the selector to appear in the DOM.
    * @param {string} selector - CSS selector to wait for.
