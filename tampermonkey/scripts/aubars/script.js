@@ -43,11 +43,7 @@
     await clickOnEditRegistrationButton();
     await selectRegistrationType(REGISTRATION_TYPE_TERRITORY);
     await clickOnSaveRegistrationButton();
-
-    await sleep(MAXIMUM_DELAY);
-    clickOnSaveCardButton();
-
-    await sleep(MAXIMUM_DELAY);
+    await clickOnSaveCardButton();
   }
   async function setCard(card) {
     const input = await waitForElement('input[placeholder="Номер карты"]');
@@ -110,10 +106,9 @@
     const button = await waitForElement('table[name="BUTTON_OK"]');
     button.click();
   }
-  function clickOnSaveCardButton() {
-    const ok = document.querySelector('table[cmptype="Button"][onclick*="closeWindow"]');
-    console.log(ok);
-    ok.click();
+  async function clickOnSaveCardButton() {
+    const button = await waitForElement('table[cmptype="Button"][onclick*="closeWindow"]');
+    button.click();
   }
 
   // static
