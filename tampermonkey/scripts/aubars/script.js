@@ -42,9 +42,7 @@
     await clickOnMedicalOrganizationTab();
     await clickOnEditRegistrationButton();
     await selectRegistrationType(REGISTRATION_TYPE_TERRITORY);
-
-    await sleep(MAXIMUM_DELAY);
-    clickOnSaveRegistrationButton();
+    await clickOnSaveRegistrationButton();
 
     await sleep(MAXIMUM_DELAY);
     clickOnSaveCardButton();
@@ -108,10 +106,9 @@
     console.log('Готово. keyvalue=' + select.getAttribute('keyvalue') +
       ', value=' + input.value);
   }
-  function clickOnSaveRegistrationButton() {
-    const ok = document.querySelector('table[name="BUTTON_OK"]');
-    console.log(ok);
-    ok.click();
+  async function clickOnSaveRegistrationButton() {
+    const button = await waitForElement('table[name="BUTTON_OK"]');
+    button.click();
   }
   function clickOnSaveCardButton() {
     const ok = document.querySelector('table[cmptype="Button"][onclick*="closeWindow"]');
