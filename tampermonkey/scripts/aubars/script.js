@@ -39,7 +39,7 @@
     await clickOnEditCardLink();
     await clickOnMedicalOrganizationTab();
     await clickOnEditRegistrationButton();
-    await selectRegistrationType(REGISTRATION_TYPE_TERRITORY);
+    await selectRegistrationType();
     await clickOnSaveRegistrationButton();
     await clickOnSaveCardButton();
   }
@@ -63,42 +63,8 @@
     const button = await waitForElement('#PopUp_Menu_P_AGENT_REGISTRATION_GRID tr.item-base img.edit');
     button.click();
   }
-  async function selectRegistrationType(type) {
-    const select = await waitForElement('table[name="REG_TYPE"]');
-    const input = select.querySelector('input.input-ctrl');
-    const item = select.querySelector(
-      `tr[cmptype="ComboItem"][comboboxname="REG_TYPE"][value="${type}"]:not([sample="true"])`
-    );
-
-    if (!item) {
-      console.warn('Не найдено value=' + type);
-      return;
-    }
-
-    select.setAttribute('keyvalue', type);
-
-    select.querySelectorAll('tr[cmptype="ComboItem"]').forEach(tr => {
-      tr.classList.remove('combo-item-selected');
-      tr.removeAttribute('selected');
-    });
-    item.classList.add('combo-item-selected');
-    item.setAttribute('selected', 'true');
-
-    const caption = item.querySelector('span[cont="itemcaption"]');
-    input.value = caption ? caption.textContent.trim() : '';
-
-    try {
-      if (typeof ComboBox_AfterRefresh === 'function') {
-      }
-    } catch (e) { /* ignore */ }
-
-    input.dispatchEvent(new Event('change', { bubbles: true }));
-    select.dispatchEvent(new Event('change', { bubbles: true }));
-    input.dispatchEvent(new Event('input', { bubbles: true }));
-    input.dispatchEvent(new Event('blur', { bubbles: true }));
-
-    console.log('Готово. keyvalue=' + select.getAttribute('keyvalue') +
-      ', value=' + input.value);
+  async function selectRegistrationType() {
+    await selectOptionWithValue('REG_TYPE', REGISTRATION_TYPE_TERRITORY);
   }
   async function clickOnSaveRegistrationButton() {
     const button = await waitForElement('table[name="BUTTON_OK"]');
@@ -107,6 +73,37 @@
   async function clickOnSaveCardButton() {
     const button = await waitForElement('table[cmptype="Button"][onclick*="closeWindow"]');
     button.click();
+  }
+
+  // bars
+  async function selectOptionWithValue(name, value) {
+    const select = await waitForElement(`table[name="${name}"]`);
+    const input = select.querySelector('input.input-ctrl');
+    const option = select.querySelector(
+        `tr[cmptype="ComboItem"][comboboxname="${name}"][value="${value}"]:not([sample="true"])`
+    );
+
+    if (!option) {
+      console.warn(`Can not find option with value = ${value}`);
+      return;
+    }
+
+    select.setAttribute('keyvalue', value);
+
+    select.querySelectorAll('tr[cmptype="ComboItem"]').forEach(tr => {
+      tr.classList.remove('combo-item-selected');
+      tr.removeAttribute('selected');
+    });
+    option.classList.add('combo-item-selected');
+    option.setAttribute('selected', 'true');
+
+    const caption = option.querySelector('span[cont="itemcaption"]');
+    input.value = caption ? caption.textContent.trim() : '';
+
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+    select.dispatchEvent(new Event('change', { bubbles: true }));
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    input.dispatchEvent(new Event('blur', { bubbles: true }));
   }
 
   // static
