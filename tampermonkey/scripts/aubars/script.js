@@ -16,21 +16,31 @@
   const CARDS = [
     '18/033663',
     '18/000001',
-    '18/000002'
+    '18/000002',
   ];
   async function main() {
     for (let i = 0; i < CARDS.length; i++) {
       try {
-        console.log('=== Обработка карты:', CARDS[i], '===');
+        console.log(
+          '=== Обработка карты:',
+          CARDS[i],
+          '===',
+        );
         await processCard(CARDS[i]);
-        console.log(`Карта ${CARDS[i]} обработана (${i + 1}/${CARDS.length})`);
+        console.log(
+          `Карта ${CARDS[i]} обработана`,
+          `(${i + 1}/${CARDS.length})`,
+        );
       } catch (e) {
         console.error(`Ошибка на карте ${CARDS[i]}:`, e);
       }
     }
     console.log('Все карты обработаны.');
   }
-  GM_registerMenuCommand("Установить тип привязки для множества карт", main);
+  GM_registerMenuCommand(
+    'Установить тип привязки для множества карт',
+    main,
+  );
 
   // processCard
   async function processCard(card) {
@@ -44,66 +54,99 @@
     await clickOnSaveCardButton();
   }
   async function setCard(card) {
-    const input = await waitForElement('input[placeholder="Номер карты"]');
+    const input = await waitForElement(
+      'input[placeholder="Номер карты"]',
+    );
     input.value = card;
   }
   async function clickOnFindButton() {
-    const button = await waitForElement('table[name="ButSearchPatient"]');
+    const button = await waitForElement(
+      'table[name="ButSearchPatient"]',
+    );
     button.click();
   }
   async function clickOnEditCardLink() {
-    const link = await waitForElement('td[name="CARD_NUMBER_COL"] a');
+    const link = await waitForElement(
+      'td[name="CARD_NUMBER_COL"] a',
+    );
     link.click();
   }
   async function clickOnMedicalOrganizationTab() {
-    const tab = await waitForElement('div[name="PMC_AnketaPageControl2"] .TabCenter');
+    const tab = await waitForElement(
+      'div[name="PMC_AnketaPageControl2"] .TabCenter',
+    );
     tab.click();
   }
   async function clickOnEditRegistrationButton() {
-    const button = await waitForElement('#PopUp_Menu_P_AGENT_REGISTRATION_GRID tr.item-base img.edit');
+    const button = await waitForElement(
+      '#PopUp_Menu_P_AGENT_REGISTRATION_GRID tr.item-base img.edit',
+    );
     button.click();
   }
   async function selectRegistrationType() {
-    await selectOptionWithValue('REG_TYPE', REGISTRATION_TYPE_TERRITORY);
+    await selectOptionWithValue(
+      'REG_TYPE',
+      REGISTRATION_TYPE_TERRITORY,
+    );
   }
   async function clickOnSaveRegistrationButton() {
-    const button = await waitForElement('table[name="BUTTON_OK"]');
+    const button = await waitForElement(
+      'table[name="BUTTON_OK"]',
+    );
     button.click();
   }
   async function clickOnSaveCardButton() {
-    const button = await waitForElement('table[cmptype="Button"][onclick*="closeWindow"]');
+    const button = await waitForElement(
+      'table[cmptype="Button"][onclick*="closeWindow"]',
+    );
     button.click();
   }
 
   // bars
   async function selectOptionWithValue(name, value) {
-    const select = await waitForElement(`table[name="${name}"]`);
+    const select = await waitForElement(
+      `table[name="${name}"]`,
+    );
     const input = select.querySelector('input.input-ctrl');
     const option = select.querySelector(
-        `tr[cmptype="ComboItem"][comboboxname="${name}"][value="${value}"]:not([sample="true"])`
+      `tr[cmptype="ComboItem"][comboboxname="${name}"][value="${value}"]:not([sample="true"])`,
     );
 
     if (!option) {
-      console.warn(`Can not find option with value = ${value}`);
+      console.warn(
+        `Can not find option with value = ${value}`,
+      );
       return;
     }
 
     select.setAttribute('keyvalue', value);
 
-    select.querySelectorAll('tr[cmptype="ComboItem"]').forEach(tr => {
-      tr.classList.remove('combo-item-selected');
-      tr.removeAttribute('selected');
-    });
+    select
+      .querySelectorAll('tr[cmptype="ComboItem"]')
+      .forEach((tr) => {
+        tr.classList.remove('combo-item-selected');
+        tr.removeAttribute('selected');
+      });
     option.classList.add('combo-item-selected');
     option.setAttribute('selected', 'true');
 
-    const caption = option.querySelector('span[cont="itemcaption"]');
+    const caption = option.querySelector(
+      'span[cont="itemcaption"]',
+    );
     input.value = caption ? caption.textContent.trim() : '';
 
-    input.dispatchEvent(new Event('change', { bubbles: true }));
-    select.dispatchEvent(new Event('change', { bubbles: true }));
-    input.dispatchEvent(new Event('input', { bubbles: true }));
-    input.dispatchEvent(new Event('blur', { bubbles: true }));
+    input.dispatchEvent(
+      new Event('change', { bubbles: true }),
+    );
+    select.dispatchEvent(
+      new Event('change', { bubbles: true }),
+    );
+    input.dispatchEvent(
+      new Event('input', { bubbles: true }),
+    );
+    input.dispatchEvent(
+      new Event('blur', { bubbles: true }),
+    );
   }
 
   // static
@@ -137,18 +180,24 @@
           clearTimeout(timeout);
         }
       };
-      observer.observe(document.documentElement || document.body, {
-        childList: true,
-        subtree: true,
-        attributes: true,
-        attributeFilter: undefined,
-      });
+      observer.observe(
+        document.documentElement || document.body,
+        {
+          childList: true,
+          subtree: true,
+          attributes: true,
+          attributeFilter: undefined,
+        },
+      );
       timeout = setTimeout(() => {
         cleanup();
-        reject(new Error(
-            `waitForElement: element "${selector}" not found within ${duration} ms`
-        ));
+        reject(
+          new Error(
+            'waitForElement: ' +
+            `"${selector}" not found within ${duration} ms`,
+          ),
+        );
       }, duration);
     });
-  }
+  };
 })();
