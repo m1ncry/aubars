@@ -79,7 +79,11 @@
   }
   async function clickOnEditRegistrationButton() {
     const button = await waitForElement(
-      '#PopUp_Menu_P_AGENT_REGISTRATION_GRID tr.item-base img.edit',
+      [
+        '#PopUp_Menu_P_AGENT_REGISTRATION_GRID',
+        'tr.item-base',
+        'img.edit',
+      ].join(" "),
     );
     button.click();
   }
@@ -109,7 +113,12 @@
     );
     const input = select.querySelector('input.input-ctrl');
     const option = select.querySelector(
-      `tr[cmptype="ComboItem"][comboboxname="${name}"][value="${value}"]:not([sample="true"])`,
+      [
+        'tr[cmptype="ComboItem"]',
+        `[comboboxname="${name}"]`,
+        `[value="${value}"]`,
+        ':not([sample="true"])',
+      ].join("")
     );
 
     if (!option) {
@@ -151,11 +160,13 @@
 
   // static
   /**
-   * Waits for an element matching the selector to appear in the DOM.
+   * Waits for an element
+   * matching the selector to appear in the DOM.
    * @param {string} selector - CSS selector to wait for.
    * @param {number} duration - Timeout in milliseconds.
-   * @returns {Promise<HTMLElement>} Resolves with the matched element.
-   * @throws {Error} If the element is not found within `duration` ms.
+   * @returns {Promise<HTMLElement>} Resolves with element.
+   * @throws {Error} If the element is not found
+   * within `duration` ms.
    */
   const waitForElement = (selector, duration = 5000) => {
     return new Promise((resolve, reject) => {
